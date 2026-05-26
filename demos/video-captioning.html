@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Captioning Research - Vania Velda</title>
+  <meta name="description" content="Novel video captioning methods improving caption distinctiveness using text-video similarity objectives and triplet loss. Published in Image and Vision Computing (2023). Evaluated on MSVD and MSR-VTT datasets with state-of-the-art results.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://vaniavelda.github.io/demos/video-captioning.html">
+  <meta property="og:title" content="Video Captioning Research - Vania Velda">
+  <meta property="og:description" content="Improving distinctiveness in video captioning with text-video similarity. Published in Image and Vision Computing, 2023.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .slide-img {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .slide-caption {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin: 16px 0 24px;
+    }
+    .result-table th,
+    .result-table td {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+    .result-table th {
+      background: var(--bg-card);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .result-table td {
+      color: var(--text-muted);
+    }
+    .result-table td.best {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .result-table tr.ours td {
+      background: rgba(109, 159, 255, 0.05);
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-brand">Vania Velda</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#demos">All Demos</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-header">
+    <a href="../index.html#demos" class="back-link">&larr; Back to all demos</a>
+    <h1>Video Captioning Research</h1>
+    <p>M.Sc. thesis and first-author publication in <em>Image and Vision Computing</em> (2023). Proposed two methods to improve the distinctiveness of generated video captions &mdash; applicable to any existing video captioning model without modifying architectures or visual features.</p>
+  </div>
+
+  <!-- Problem -->
+  <section class="demo-section">
+    <h2>The Problem: Generic Captions</h2>
+    <img src="../images/video-captioning/motivation-04.jpg" alt="Motivation: generic vs distinctive video captions. Two cooking videos both captioned as 'a person is cooking' vs. distinctive captions 'someone is frying churros' and 'a person is cooking hashbrowns'" class="slide-img" loading="lazy">
+    <p class="slide-caption">
+      Video captioning models tend to generate generic sentences like "a person is cooking" for visually different videos.
+      Distinctive captions should highlight unique details &mdash; "someone is frying churros" vs. "a person is cooking hashbrowns" &mdash;
+      which is important for applications like visual question answering and assisting visually impaired users.
+    </p>
+  </section>
+
+  <!-- Method 1 -->
+  <section class="demo-section">
+    <h2>Method 1: Video Retrieval-Based Distinctiveness</h2>
+    <img src="../images/video-captioning/method1_arch-08.jpg" alt="Method 1 architecture: video captioning generates sentences, a pre-trained video retrieval model calculates similarity scores between video-generated and video-ground truth pairs to compute the distinctiveness loss" class="slide-img" loading="lazy">
+    <p class="slide-caption">
+      Uses a pre-trained video retrieval model (CLIP4Clip) to measure text-video similarity.
+      The distinctiveness objective encourages generated captions to achieve similarity scores
+      close to those of ground truth captions, trained via REINFORCE with CIDEr + distinctiveness reward.
+    </p>
+  </section>
+
+  <!-- Method 2 -->
+  <section class="demo-section">
+    <h2>Method 2: Triplet Loss-Based Distinctiveness</h2>
+    <img src="../images/video-captioning/method2_arch-12.jpg" alt="Method 2 architecture: BERT extracts embeddings of generated and ground truth sentences, triplet loss ensures generated captions are similar to matched video while dissimilar to unmatched videos" class="slide-img" loading="lazy">
+    <p class="slide-caption">
+      Uses BERT sentence embeddings with a triplet loss variant. The objective simultaneously minimizes
+      the gap between generated and ground truth similarity, while maximizing distance from unpaired samples.
+      Simpler training process than Method 1 &mdash; no additional video retrieval model needed.
+    </p>
+  </section>
+
+  <!-- Results -->
+  <section class="demo-section">
+    <h2>Results: State-of-the-Art Performance</h2>
+    <img src="../images/video-captioning/results-22.jpg" alt="Comparison table showing Method 1 and Method 2 outperforming 18 existing approaches on MSVD and MSR-VTT datasets across BLEU-4, METEOR, ROUGE-L, and CIDEr metrics" class="slide-img" loading="lazy">
+    <p class="slide-caption">
+      Both methods outperform 18 existing approaches on MSVD and MSR-VTT benchmarks.
+      Method 1 achieves the best results on MSVD (CIDEr: 124.47, BLEU-4: 64.77),
+      while Method 2 leads on MSR-VTT CIDEr (61.48). Results exclude models using
+      external pretraining data or additional semantic inputs for fair comparison.
+    </p>
+  </section>
+
+  <!-- Distinctiveness -->
+  <section class="demo-section">
+    <h2>Distinctiveness Improvement</h2>
+    <img src="../images/video-captioning/distinctiveness-23.jpg" alt="Distinctiveness comparison table showing both methods improve text-to-video retrieval R@1 and R@5, uniqueness, and novelty metrics compared to baseline and CLIP4Caption" class="slide-img" loading="lazy">
+
+    <h3 style="font-size: 1rem; margin: 24px 0 12px;">Key Distinctiveness Metrics</h3>
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th>Dataset</th>
+          <th>Method</th>
+          <th>R@1</th>
+          <th>R@5</th>
+          <th>Uniqueness</th>
+          <th>Novelty</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="3">MSVD</td>
+          <td>Baseline</td>
+          <td>29.2</td>
+          <td>65.17</td>
+          <td>62.23%</td>
+          <td>53.59%</td>
+        </tr>
+        <tr class="ours">
+          <td>Method 1 (Ours)</td>
+          <td class="best">30.8</td>
+          <td class="best">66.6</td>
+          <td>64.92%</td>
+          <td class="best">55.28%</td>
+        </tr>
+        <tr class="ours">
+          <td>Method 2 (Ours)</td>
+          <td>30.4</td>
+          <td>65.5</td>
+          <td>63.73%</td>
+          <td>54.49%</td>
+        </tr>
+        <tr>
+          <td rowspan="3">MSR-VTT</td>
+          <td>Baseline</td>
+          <td>15.33</td>
+          <td>38.07</td>
+          <td>49.23%</td>
+          <td>30.55%</td>
+        </tr>
+        <tr class="ours">
+          <td>Method 1 (Ours)</td>
+          <td class="best">17.0</td>
+          <td class="best">40.27</td>
+          <td class="best">53.94%</td>
+          <td class="best">31.12%</td>
+        </tr>
+        <tr class="ours">
+          <td>Method 2 (Ours)</td>
+          <td>16.8</td>
+          <td>39.8</td>
+          <td>53.07%</td>
+          <td>31.03%</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="slide-caption">
+      Both methods consistently improve all distinctiveness metrics (self-retrieval R@K, uniqueness, and novelty)
+      across both datasets, while also maintaining or improving caption accuracy.
+    </p>
+  </section>
+
+  <!-- Qualitative Results -->
+  <section class="demo-section">
+    <h2>Qualitative Results &mdash; MSVD</h2>
+    <img src="../images/video-captioning/qualitative_msvd-31.jpg" alt="Qualitative results on MSVD: Method 1 generates 'a man is eating spaghetti' instead of generic 'eating food', and 'a little boy is singing and playing a guitar' instead of just 'playing guitar'. Method 2 generates 'a woman is putting on eye makeup' and 'a woman is dancing in the rain' capturing specific details missed by baselines." class="slide-img" loading="lazy">
+    <p class="slide-caption">
+      On MSVD, both methods capture specific details that baselines miss.
+      Method 1 correctly identifies "eating spaghetti" and "a little boy singing and playing a guitar",
+      while baselines produce generic captions like "eating a piece of food" or "a boy is playing guitar".
+      Method 2 captures "putting on eye makeup" and "dancing in the rain" where baselines only say "applying makeup" and "a woman is dancing".
+    </p>
+  </section>
+
+  <section class="demo-section">
+    <h2>Qualitative Results &mdash; MSR-VTT</h2>
+    <img src="../images/video-captioning/qualitative_msrvtt-32.jpg" alt="Qualitative results on MSR-VTT: Method 1 generates 'a woman talking about a human body' instead of 'a person is explaining something', and 'a girl laying in bed and knocking on the wall'. Method 2 generates 'a man is cooking hashbrowns in a pan' and 'a man is showing how to prepare a salad'." class="slide-img" loading="lazy">
+    <p class="slide-caption">
+      On MSR-VTT, Method 1 generates "a woman talking about a human body" where baselines only say
+      "a person is explaining something", and captures compound actions like "laying in bed and knocking on the wall".
+      Method 2 identifies "cooking hashbrowns in a pan" and "showing how to prepare a salad" instead of generic "cooking" and "making a dish".
+    </p>
+  </section>
+
+  <!-- Publications -->
+  <section class="demo-section">
+    <h2>Publications</h2>
+    <div class="publication-item">
+      <strong>Improving Distinctiveness in Video Captioning with Text-Video Similarity</strong><br>
+      <em>Image and Vision Computing, 2023</em> &mdash; First author
+    </div>
+    <div class="publication-item">
+      <strong>Action Knowledge for Video Captioning with Graph Neural Networks</strong><br>
+      <em>Journal of King Saud University &ndash; Computer and Information Sciences, 2023</em> &mdash; Co-author
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <div class="skills-grid">
+      <span class="skill-tag">CLIP (ViT-B/16)</span>
+      <span class="skill-tag">Transformer Encoder-Decoder</span>
+      <span class="skill-tag">REINFORCE</span>
+      <span class="skill-tag">BERT Embeddings</span>
+      <span class="skill-tag">Triplet Loss</span>
+      <span class="skill-tag">CIDEr Optimization</span>
+      <span class="skill-tag">MSVD</span>
+      <span class="skill-tag">MSR-VTT</span>
+      <span class="skill-tag">PyTorch</span>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="container">
+    <p>Vania Velda &mdash; AI Engineer &mdash; Seoul, South Korea</p>
+  </div>
+</footer>
+
+</body>
+</html>

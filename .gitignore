@@ -1,0 +1,6 @@
+resume/
+.claude
+
+# Large source WAV files (site uses compressed MP3s for these)
+sports_examples/*.wav
+sports_examples/run_pipeline.py

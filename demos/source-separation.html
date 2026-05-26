@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audio Source Separation - Vania Velda</title>
+  <meta name="description" content="Audio source separation for vocal/instrumental splitting and speech enhancement. Achieved 96% accuracy, securing a commercial telecom contract.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://vaniavelda.github.io/demos/source-separation.html">
+  <meta property="og:title" content="Audio Source Separation Demo - Vania Velda">
+  <meta property="og:description" content="Vocal/instrumental separation and speech enhancement with 96% accuracy.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .disclaimer {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 48px;
+    }
+    .disclaimer strong {
+      color: var(--text);
+    }
+    .original-link {
+      font-size: 0.82rem;
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-brand">Vania Velda</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#demos">All Demos</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-header">
+    <a href="../index.html#demos" class="back-link">&larr; Back to all demos</a>
+    <h1>Audio Source Separation</h1>
+    <p>Vocal/instrumental separation for music and speech enhancement for noisy environments. Improved accuracy from 91% to 96%, contributing to a commercial telecom contract.</p>
+  </div>
+
+  <section class="demo-section">
+    <h2>Music: Vocal &amp; Instrumental Separation</h2>
+    <p class="original-link">Original source: <a href="https://www.youtube.com/watch?v=tQP-ONLL13U" target="_blank" rel="noopener noreferrer">youtube.com/watch?v=tQP-ONLL13U</a></p>
+    <div class="demo-pair">
+      <div>
+        <label>Separated Vocal</label>
+        <audio controls controlslist="nodownload" preload="metadata">
+          <source src="../source_separation _result/songs/tQP-ONLL13U_vocal.wav" type="audio/wav">
+        </audio>
+      </div>
+      <div>
+        <label>Separated Backtrack</label>
+        <audio controls controlslist="nodownload" preload="metadata">
+          <source src="../source_separation _result/songs/tQP-ONLL13U_backtrack.wav" type="audio/wav">
+        </audio>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Sports Broadcast: Speech Enhancement</h2>
+    <div class="demo-pair">
+      <div>
+        <label>Original (Noisy)</label>
+        <audio controls controlslist="nodownload" preload="metadata">
+          <source src="../source_separation _result/sports/ORIGINAL.wav" type="audio/wav">
+        </audio>
+      </div>
+      <div>
+        <label>Our Algorithm</label>
+        <audio controls controlslist="nodownload" preload="metadata">
+          <source src="../source_separation _result/sports/OUR_ALGORITHM.wav" type="audio/wav">
+        </audio>
+      </div>
+    </div>
+    <div class="demo-pair">
+      <div>
+        <label>Baseline: Denoiser</label>
+        <audio controls controlslist="nodownload" preload="metadata">
+          <source src="../source_separation _result/sports/DENOISER.wav" type="audio/wav">
+        </audio>
+      </div>
+      <div>
+        <label>Baseline: SENSE</label>
+        <audio controls controlslist="nodownload" preload="metadata">
+          <source src="../source_separation _result/sports/SENSE_RESULT.wav" type="audio/wav">
+        </audio>
+      </div>
+    </div>
+  </section>
+
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> The audio samples on this page are used solely for demonstration purposes of the source separation technology. I do not own the original music, video, or broadcast content. All original media belongs to their respective copyright holders. The YouTube link is provided for reference to the original source material.
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>Vania Velda &mdash; AI Engineer &mdash; Seoul, South Korea</p>
+  </div>
+</footer>
+
+</body>
+</html>

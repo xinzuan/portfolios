@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sports Subtitle Pipeline - Vania Velda</title>
+  <meta name="description" content="Sports-specialized subtitle pipeline with audio source separation, VAD+YamNet timestamp refinement, player name glossary, transcription and translation QC. 10+ versions iterated, currently in production.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://vaniavelda.github.io/demos/sports-subtitle.html">
+  <meta property="og:title" content="Sports Subtitle Pipeline - Vania Velda">
+  <meta property="og:description" content="Sports-specialized subtitle system with source separation, glossary grounding, and multi-stage QC.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    details { margin-top: 12px; }
+    summary {
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--accent);
+      padding: 8px 0;
+      user-select: none;
+    }
+    summary:hover { color: var(--accent-hover); }
+    .srt-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 12px;
+    }
+    .srt-block label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 8px;
+    }
+    .srt-block pre {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 0.78rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .correction-highlight {
+      color: #e06c75;
+      text-decoration: line-through;
+      opacity: 0.7;
+    }
+    .correction-fixed {
+      color: #98c379;
+      font-weight: 500;
+    }
+    .correction-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+    .correction-row:last-child { border-bottom: none; }
+    .correction-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .style-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .style-tab {
+      padding: 6px 16px;
+      border-radius: 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .style-tab:hover { border-color: var(--accent); color: var(--text); }
+    .style-tab.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .style-content { display: none; }
+    .style-content.active { display: block; }
+    @media (max-width: 640px) {
+      .srt-compare { grid-template-columns: 1fr; }
+      .correction-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-brand">Vania Velda</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#demos">All Demos</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-header">
+    <a href="../index.html#demos" class="back-link">&larr; Back to all demos</a>
+    <h1>Sports Subtitle Pipeline</h1>
+    <p>End-to-end subtitle system tailored for sports broadcasts. Handles noisy stadium audio, crowd/speech separation, player name recognition, and multilingual translation with domain-specific quality control. 10+ versions iterated with different ASR engines, denoising strategies, and QC approaches. Users can select from multiple pipeline versions, each optimized for different content characteristics (e.g., long-form broadcasts, highlight clips, noisy stadium environments).</p>
+  </div>
+
+  <section class="demo-section">
+    <h2>Highlights</h2>
+    <div class="skills-grid">
+      <span class="skill-tag">Crowd/Speech Separation</span>
+      <span class="skill-tag">Timestamp Refinement</span>
+      <span class="skill-tag">Player Name Glossary</span>
+      <span class="skill-tag">Transcription QC</span>
+      <span class="skill-tag">Configurable Translation Style</span>
+      <span class="skill-tag">Translation QC</span>
+      <span class="skill-tag">10+ Version Iterations</span>
+      <span class="skill-tag">In Production</span>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Example: Manchester City vs Arsenal &mdash; 2026 Carabao Cup Final</h2>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 24px;">Pre-match broadcast commentary processed through the pipeline. Below shows real outputs across the pipeline stages: audio enhancement, version iteration, transcription QC, and translation with multi-stage QC.</p>
+  </section>
+
+  <section class="demo-section">
+    <h3>Audio: Source Separation &amp; Enhancement</h3>
+    <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 16px;">The original broadcast audio contains crowd noise, stadium ambience, and background music mixed with commentary speech. Our source separation and speech enhancement pipeline isolates the speech channel for cleaner ASR input.</p>
+    <div class="demo-pair">
+      <div>
+        <label>Original Broadcast Audio</label>
+        <audio controls controlslist="nodownload" preload="metadata">
+          <source src="../sports_examples/original_audio.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+      <div>
+        <label>After Source Separation &amp; Enhancement</label>
+        <audio controls controlslist="nodownload" preload="metadata">
+          <source src="../sports_examples/denoised_enhanced_audio.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h3>Stage 1: Version Iteration (Earlier Version &rarr; Improved Version)</h3>
+    <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px;">The earlier version had a ~2 minute gap of missing segments (02:18&ndash;04:05) during the highlight goals section, plus hallucinated text in later segments. The improved version recovers all missing content and eliminates hallucinations.</p>
+
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+        <div class="correction-label">Earlier Version</div>
+        <div class="correction-label">Improved Version</div>
+      </div>
+      <div class="correction-row">
+        <div style="font-size: 0.78rem; color: var(--text-muted);">
+          <strong style="color: #e06c75;">Missing ~2 minutes (02:18&ndash;04:05)</strong><br>
+          Jumps from segment 24 at 02:18 directly to segment 25 at 04:05. All highlight goal commentary is lost.
+        </div>
+        <div style="font-size: 0.78rem; color: var(--text-muted);">
+          <strong style="color: #98c379;">All segments recovered (02:24&ndash;04:35)</strong><br>
+          Full highlight reel coverage with Yaya Tour&eacute;, Samir Nasri, Jes&uacute;s Navas, Fernandinho, Aguero, and Kompany goal commentary.
+        </div>
+      </div>
+      <div class="correction-row">
+        <div><span class="correction-highlight">Sergio Aguero with a look at the hockey ball, City are in clubs in the Carabao Cup final.</span></div>
+        <div><span class="correction-fixed">Sergio Aguero with the lobo of the goalkeeper, sits here in front in the Caribbean Cup final.</span></div>
+      </div>
+      <div class="correction-row">
+        <div><span class="correction-highlight">At the Tarabar Cup Final, spawned by Sergio Aguero.</span></div>
+        <div><span class="correction-fixed">Aguero, he'll find his way through here, Sergio Aguero with the lobby of the goalkeeper, sits here in front, in the Caribbean Cup final.</span></div>
+      </div>
+      <div class="correction-row">
+        <div><span class="correction-highlight">Josco Guardiola remains sidelined</span></div>
+        <div><span class="correction-fixed">Josco Guardiol remains sidelined</span></div>
+      </div>
+    </div>
+
+    <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px;">The earlier version also produced hallucinated outputs where the audio contained emotional speech with crowd noise:</p>
+
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 16px;">
+      <div class="correction-label" style="margin-bottom: 12px;">Hallucinated segments in earlier version</div>
+      <div style="font-size: 0.82rem; line-height: 1.8; color: var(--text-muted);">
+        <span class="correction-highlight">Here's some cake.</span><br>
+        <span class="correction-highlight">I don't need to bring new cities.</span><br>
+        <span class="correction-highlight">Otherwise I love you.</span><br>
+        <span class="correction-highlight">Show ourselves of death.</span><br>
+        <span class="correction-highlight">For we need to let it, the direction of the person from the party to the party.</span><br>
+        <span class="correction-highlight">But let's see, the light is the kind of the kind of the, because they find a way of that to wear.</span>
+      </div>
+      <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+        These segments were eliminated in the improved version through better ASR engine selection and denoising strategy.
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h3>Stage 2: Transcription QC</h3>
+    <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px;">Even the improved version still contains ASR errors, especially on player and team names. The transcription QC corrects errors using the original audio and a player name glossary.</p>
+
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 16px;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+        <div class="correction-label">Before QC (Raw ASR)</div>
+        <div class="correction-label">After Transcription QC</div>
+      </div>
+      <div class="correction-row">
+        <div><span class="correction-highlight">Aguero with the lobo of the goalkeeper, sits here in front in the Caribbean Cup final.</span></div>
+        <div><span class="correction-fixed">Aguero with a lob over the goalkeeper. City are in front in the Carabao Cup final.</span></div>
+      </div>
+      <div class="correction-row">
+        <div><span class="correction-highlight">From Stamford Nursery!</span></div>
+        <div><span class="correction-fixed">How about that from Samir Nasri!</span></div>
+      </div>
+      <div class="correction-row">
+        <div><span class="correction-highlight">Hazel's now ass.</span></div>
+        <div><span class="correction-fixed">Jes&uacute;s Navas!</span></div>
+      </div>
+      <div class="correction-row">
+        <div><span class="correction-highlight">Wait for Fernandino, who scored?</span></div>
+        <div><span class="correction-fixed">Right for Fernandinho, who scores!</span></div>
+      </div>
+      <div class="correction-row">
+        <div><span class="correction-highlight">Vincent Coppany scores the captain's goal</span></div>
+        <div><span class="correction-fixed">Vincent Kompany scores, the captain's goal.</span></div>
+      </div>
+      <div class="correction-row">
+        <div><span class="correction-highlight">Josco Guardiol remains sidelined with a broken leg</span></div>
+        <div><span class="correction-fixed">Josko Gvardiol remains sidelined with a broken leg</span></div>
+      </div>
+      <div class="correction-row">
+        <div><span class="correction-highlight">Joining them on the sidelines is Huben Diage</span></div>
+        <div><span class="correction-fixed">Joining them on the sidelines is Ruben Dias</span></div>
+      </div>
+      <div class="correction-row">
+        <div><span class="correction-highlight">Alex Ferguson, Brian Cloth, Jos&eacute; Mourinho</span></div>
+        <div><span class="correction-fixed">Alex Ferguson, Brian Clough, Jos&eacute; Mourinho</span></div>
+      </div>
+      <div class="correction-row">
+        <div><span class="correction-highlight">Marmooch grinders and Marmooch comes forward.</span></div>
+        <div><span class="correction-fixed">Marmoush and grinders and Marmoush comes forward.</span></div>
+      </div>
+      <div class="correction-row">
+        <div><span class="correction-highlight">his Arsenal against Magic.</span></div>
+        <div><span class="correction-fixed">Here's Arsenal against Manchester City.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h3>Stage 3: Translation Styles (EN &rarr; KO)</h3>
+    <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 16px;">Users can select from four translation styles optimized for different broadcast preferences. Same source content, different translation approaches:</p>
+
+    <div class="style-tabs">
+      <button class="style-tab active" onclick="showStyle('commentator')">&#xC758;&#xC5ED; (Commentator)</button>
+      <button class="style-tab" onclick="showStyle('adaptive')">&#xC758;&#xC5ED;+ (Adaptive)</button>
+      <button class="style-tab" onclick="showStyle('literal')">&#xC9C1;&#xC5ED; (Literal)</button>
+      <button class="style-tab" onclick="showStyle('balanced')">&#xADE0;&#xD615; (Balanced)</button>
+    </div>
+
+    <div id="style-commentator" class="style-content active">
+      <div class="srt-compare">
+        <div class="srt-block">
+          <label>English (Source)</label>
+          <pre>1
+00:00:14,800 --> 00:00:19,280
+Welcome back to City TV with Wembley awaiting for Manchester City.
+
+2
+00:00:19,838 --> 00:00:24,480
+They prepare to face Arsenal in the 2026 Carabao Cup final.
+
+3
+00:00:25,359 --> 00:00:34,240
+It is the Blues' fifth appearance in the showpiece event in the space of 10 years under Pep Guardiola, who has described reaching the final as an honour.
+
+7
+00:01:17,438 --> 00:01:20,879
+City's recent record against the Gunners makes for fascinating reading.
+
+8
+00:01:21,438 --> 00:01:33,680
+Guardiola's side have not beaten Arsenal in any of their last six meetings, a run stretching back to the famous 4-1 triumph during the treble-winning campaign of 2022-2023.</pre>
+        </div>
+        <div class="srt-block">
+          <label>Korean (&#xC758;&#xC5ED; Style)</label>
+          <pre>1
+00:00:14,800 --> 00:00:19,280
+시티 TV로 다시 돌아오셨습니다. 웸블리에서 맨시티를 기다리고 있습니다.
+
+2
+00:00:19,838 --> 00:00:24,480
+맨시티는 2026 카라바오컵 결승에서 아스날과 맞대결을 준비하고 있습니다.
+
+3
+00:00:25,359 --> 00:00:34,240
+블루스(맨시티)는 펩 과르디올라 감독 아래 10년 동안 다섯 번째 결승 무대를 밟게 되었으며, 과르디올라 감독은 결승 진출 자체가 영광이라고 밝혔습니다.
+
+7
+00:01:17,438 --> 00:01:20,879
+맨시티의 최근 아스날전 성적도 흥미롭습니다.
+
+8
+00:01:21,438 --> 00:01:33,680
+과르디올라의 맨시티는 최근 6경기에서 아스날을 한 번도 이기지 못하고 있으며, 이 연패는 2022-2023 트레블 시즌의 유명한 4-1 대승까지 거슬러 올라갑니다.</pre>
+        </div>
+      </div>
+    </div>
+
+    <div id="style-adaptive" class="style-content">
+      <div class="srt-compare">
+        <div class="srt-block">
+          <label>English (Source)</label>
+          <pre>1
+00:00:14,800 --> 00:00:19,280
+Welcome back to City TV with Wembley awaiting for Manchester City.
+
+2
+00:00:19,838 --> 00:00:24,480
+They prepare to face Arsenal in the 2026 Carabao Cup final.
+
+3
+00:00:25,359 --> 00:00:34,240
+It is the Blues' fifth appearance in the showpiece event in the space of 10 years under Pep Guardiola, who has described reaching the final as an honour.
+
+7
+00:01:17,438 --> 00:01:20,879
+City's recent record against the Gunners makes for fascinating reading.
+
+8
+00:01:21,438 --> 00:01:33,680
+Guardiola's side have not beaten Arsenal in any of their last six meetings, a run stretching back to the famous 4-1 triumph during the treble-winning campaign of 2022-2023.</pre>
+        </div>
+        <div class="srt-block">
+          <label>Korean (&#xC758;&#xC5ED;+ Style)</label>
+          <pre id="adaptive-ko">Loading...</pre>
+        </div>
+      </div>
+    </div>
+
+    <div id="style-literal" class="style-content">
+      <div class="srt-compare">
+        <div class="srt-block">
+          <label>English (Source)</label>
+          <pre>1
+00:00:14,800 --> 00:00:19,280
+Welcome back to City TV with Wembley awaiting for Manchester City.
+
+2
+00:00:19,838 --> 00:00:24,480
+They prepare to face Arsenal in the 2026 Carabao Cup final.
+
+3
+00:00:25,359 --> 00:00:34,240
+It is the Blues' fifth appearance in the showpiece event in the space of 10 years under Pep Guardiola, who has described reaching the final as an honour.
+
+7
+00:01:17,438 --> 00:01:20,879
+City's recent record against the Gunners makes for fascinating reading.
+
+8
+00:01:21,438 --> 00:01:33,680
+Guardiola's side have not beaten Arsenal in any of their last six meetings, a run stretching back to the famous 4-1 triumph during the treble-winning campaign of 2022-2023.</pre>
+        </div>
+        <div class="srt-block">
+          <label>Korean (&#xC9C1;&#xC5ED; Style)</label>
+          <pre id="literal-ko">Loading...</pre>
+        </div>
+      </div>
+    </div>
+
+    <div id="style-balanced" class="style-content">
+      <div class="srt-compare">
+        <div class="srt-block">
+          <label>English (Source)</label>
+          <pre>1
+00:00:14,800 --> 00:00:19,280
+Welcome back to City TV with Wembley awaiting for Manchester City.
+
+2
+00:00:19,838 --> 00:00:24,480
+They prepare to face Arsenal in the 2026 Carabao Cup final.
+
+3
+00:00:25,359 --> 00:00:34,240
+It is the Blues' fifth appearance in the showpiece event in the space of 10 years under Pep Guardiola, who has described reaching the final as an honour.
+
+7
+00:01:17,438 --> 00:01:20,879
+City's recent record against the Gunners makes for fascinating reading.
+
+8
+00:01:21,438 --> 00:01:33,680
+Guardiola's side have not beaten Arsenal in any of their last six meetings, a run stretching back to the famous 4-1 triumph during the treble-winning campaign of 2022-2023.</pre>
+        </div>
+        <div class="srt-block">
+          <label>Korean (&#xADE0;&#xD615; Style)</label>
+          <pre id="balanced-ko">Loading...</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h3>Stage 4: Translation QC (Before &amp; After)</h3>
+    <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px;">Translation QC refines translations with player name glossary enforcement, improving fluency and ensuring consistent use of official Korean team/player names. Shown for &#xC758;&#xC5ED; (commentator) style:</p>
+
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 16px;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+        <div class="correction-label">Before Translation QC</div>
+        <div class="correction-label">After Translation QC</div>
+      </div>
+      <div class="correction-row">
+        <div><span class="correction-highlight">맨시티는 지난 준결승에서 디펜딩 챔피언 뉴캐슬을 상대로</span></div>
+        <div><span class="correction-fixed">맨시티는 준결승에서 디펜딩 챔피언 뉴캐슬 유나이티드를 상대로</span></div>
+      </div>
+      <div class="correction-row">
+        <div><span class="correction-highlight">요슈코 그바르디올은 다리 골절로 인해 웸블리 결장 명단에 남게 됐습니다.</span></div>
+        <div><span class="correction-fixed">요슈코 그바르디올은 다리 골절로 인해 웸블리에서 출전하지 못합니다.</span></div>
+      </div>
+      <div class="correction-row">
+        <div><span class="correction-highlight">여기에 더해 챔피언스리그 레알 마드리드전에서 부상을 입은 후 벤치에 남게 된 루벤 디아스도 함께 결장합니다.</span></div>
+        <div><span class="correction-fixed">여기에 더해 챔피언스리그 레알 마드리드전에서 부상을 입은 루벤 디아스도 결장합니다.</span></div>
+      </div>
+      <div class="correction-row">
+        <div><span class="correction-highlight">캐피탈 원 컵을 마무리짓는 장면입니다.</span></div>
+        <div><span class="correction-fixed">캐피탈 원 컵을 마무리하는 장면입니다.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section" style="padding-top: 32px; border-top: 1px solid var(--border);">
+    <p style="font-size: 0.78rem; color: var(--text-muted);">Disclaimer: Audio content belongs to its respective owners. Subtitles shown are pipeline outputs for demonstration purposes only.</p>
+  </section>
+</div>
+
+<footer>
+  <div class="container">
+    <p>Vania Velda &mdash; AI Engineer &mdash; Seoul, South Korea</p>
+  </div>
+</footer>
+
+<script>
+function showStyle(style) {
+  document.querySelectorAll('.style-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.style-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('style-' + style).classList.add('active');
+  event.target.classList.add('active');
+}
+
+const translations = {
+  adaptive: `1\n00:00:14,800 --> 00:00:19,280\n웸블리에서 맨시티를 기다리고 있는 가운데, City TV로 다시 돌아왔습니다.\n\n2\n00:00:19,838 --> 00:00:24,480\n맨시티는 2026 카라바오컵 결승전에서 아스날과 맞대결을 준비하고 있습니다.\n\n3\n00:00:25,359 --> 00:00:34,240\n펩 과르디올라 감독 체제에서 10년 동안 블루스가 다섯 번째로 이 무대에 오르게 되었으며, 과르디올라 감독은 결승에 진출한 것을 영광이라고 밝혔습니다.\n\n7\n00:01:17,438 --> 00:01:20,879\n맨시티의 최근 아스날전 전적도 흥미롭게 다가옵니다.\n\n8\n00:01:21,438 --> 00:01:33,680\n과르디올라 감독의 팀은 최근 아스날과의 6경기에서 승리가 없으며, 지난 2022-2023 트레블 시즌의 4-1 승리가 마지막이었습니다.`,
+  literal: `1\n00:00:14,800 --> 00:00:19,280\n웸블리가 맨시티를 기다리는 가운데, 시티 TV에 다시 오신 것을 환영합니다.\n\n2\n00:00:19,838 --> 00:00:24,480\n그들은 2026 카라바오 컵 결승전에서 아스날을 상대할 준비를 하고 있습니다.\n\n3\n00:00:25,359 --> 00:00:34,240\n펩 과르디올라 감독 아래에서 파란색 군단이 10년 동안 다섯 번째로 이 대회 결승전에 출전하게 되었으며, 펩 과르디올라는 결승 진출을 영광이라고 표현했습니다.\n\n7\n00:01:17,438 --> 00:01:20,879\n맨시티의 최근 아스날과의 전적은 흥미로운 기록이 되고 있습니다.\n\n8\n00:01:21,438 --> 00:01:33,680\n과르디올라 감독의 팀은 지난 6번의 맞대결에서 한 번도 아스날을 이기지 못했으며, 이 흐름은 2022-2023 시즌 트레블을 달성할 때의 유명한 4-1 승리까지 거슬러 올라갑니다.`,
+  balanced: `1\n00:00:14,800 --> 00:00:19,280\n맨시티를 기다리는 웸블리와 함께 시티 TV로 다시 돌아왔습니다.\n\n2\n00:00:19,838 --> 00:00:24,480\n맨시티는 2026 카라바오컵 결승에서 아스날과 맞붙을 준비를 하고 있습니다.\n\n3\n00:00:25,359 --> 00:00:34,240\n펩 과르디올라 감독 아래 10년 동안 맨시티는 이 대회 결승에 다섯 번째로 진출하며, 과르디올라 감독은 결승 진출을 영광이라고 표현했습니다.\n\n7\n00:01:17,438 --> 00:01:20,879\n맨시티의 최근 아스날전 기록은 흥미롭습니다.\n\n8\n00:01:21,438 --> 00:01:33,680\n과르디올라 감독이 이끄는 맨시티는 최근 6경기에서 아스날을 한 번도 이기지 못하고 있는데, 이 연속 무승은 2022-2023 시즌에 트레블을 달성할 당시 4-1 대승 이후 이어지고 있습니다.`
+};
+
+document.getElementById('adaptive-ko').textContent = translations.adaptive;
+document.getElementById('literal-ko').textContent = translations.literal;
+document.getElementById('balanced-ko').textContent = translations.balanced;
+</script>
+
+</body>
+</html>

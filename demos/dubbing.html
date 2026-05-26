@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Dubbing & Voice Cloning - Vania Velda</title>
+  <meta name="description" content="AI-powered multilingual dubbing with voice cloning. Original audio automatically dubbed into Chinese, Korean, Indonesian, and English while preserving the speaker's voice.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://vaniavelda.github.io/demos/dubbing.html">
+  <meta property="og:title" content="AI Dubbing & Voice Cloning Demo - Vania Velda">
+  <meta property="og:description" content="Multilingual AI dubbing with voice cloning across 20+ languages.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    details {
+      margin-top: 12px;
+    }
+    summary {
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--accent);
+      padding: 8px 0;
+      user-select: none;
+    }
+    summary:hover {
+      color: var(--accent-hover);
+    }
+    .srt-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 12px;
+    }
+    .srt-block label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 8px;
+    }
+    .srt-block pre {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 0.78rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    @media (max-width: 640px) {
+      .srt-compare {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-brand">Vania Velda</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#demos">All Demos</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-header">
+    <a href="../index.html#demos" class="back-link">&larr; Back to all demos</a>
+    <h1>AI Dubbing &amp; Voice Cloning</h1>
+    <p>End-to-end AI dubbing platform supporting 20+ languages. All examples use voice cloning to preserve the original speaker's voice characteristics in the target language. Integrates ASR, LLM-based translation, automatic translation QC, and voice-cloned TTS. Built on open-source models with custom improvements for production quality.</p>
+  </div>
+
+  <!-- Example 1 -->
+  <section class="demo-section">
+    <h2>Example 1: Korean &rarr; Chinese</h2>
+    <div class="demo-pair">
+      <div>
+        <label>Original (Korean)</label>
+        <audio controls controlslist="nodownload" preload="metadata">
+          <source src="../dubbing_examples/ORIGINAL_1_KO.mp4" type="video/mp4">
+        </audio>
+      </div>
+      <div>
+        <label>Dubbed (Chinese)</label>
+        <audio controls controlslist="nodownload" preload="metadata">
+          <source src="../dubbing_examples/DUBBED_1_CHN.mp4" type="video/mp4">
+        </audio>
+      </div>
+    </div>
+    <details>
+      <summary>View Transcription (SRT)</summary>
+      <div class="srt-compare">
+        <div class="srt-block">
+          <label>Original (Korean)</label>
+          <pre>1
+00:00:02,367 --> 00:00:08,096
+나 지금 더 안 는지 2개월 반
+
+2
+00:00:30,000 --> 00:00:34,560
+내가 그동안 어디 있었냐면
+
+3
+00:00:40,649 --> 00:00:46,880
+다른 플랫폼에서 방송을 하고 있었어
+
+4
+00:00:49,951 --> 00:00:58,176
+오늘 너네에게 다른 곳에서도 나를 볼 수 있다고 설명하기 위해서 방송을 켰어
+
+5
+00:00:58,399 --> 00:01:03,039
+그래서 나는 너네에게 이것을 안내해준 후
+
+6
+00:01:03,423 --> 00:01:05,471
+저곳에서 방송을 할 거야</pre>
+        </div>
+        <div class="srt-block">
+          <label>Dubbed (Chinese)</label>
+          <pre>1
+00:00:03,419 --> 00:00:05,855
+我现在已经两个月半没在家了
+
+2
+00:00:30,000 --> 00:00:35,320
+我 你们想知道我去哪了吗
+
+3
+00:00:42,420 --> 00:00:45,439
+其实我一直在别的平台直播
+
+4
+00:00:50,079 --> 00:00:55,299
+今天跟你们说 一天开直播就是想告诉你们
+
+5
+00:00:55,479 --> 00:01:00,031
+在别的平台也能看到我 所以我想跟你们
+
+6
+00:01:00,064 --> 00:01:05,855
+先介绍一下这个 在那里继续直播</pre>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- Example 2 -->
+  <section class="demo-section">
+    <h2>Example 2: Chinese &rarr; English</h2>
+    <div class="demo-pair">
+      <div>
+        <label>Original (Chinese)</label>
+        <audio controls controlslist="nodownload" preload="metadata">
+          <source src="../dubbing_examples/ORIGINAL_2_ENG.mp4" type="video/mp4">
+        </audio>
+      </div>
+      <div>
+        <label>Dubbed (English)</label>
+        <audio controls controlslist="nodownload" preload="metadata">
+          <source src="../dubbing_examples/DUBBED_2_ENG.mp4" type="video/mp4">
+        </audio>
+      </div>
+    </div>
+    <details>
+      <summary>View Transcription (SRT)</summary>
+      <div class="srt-compare">
+        <div class="srt-block">
+          <label>Original (Chinese)</label>
+          <pre>1
+00:00:00,096 --> 00:00:04,895
+日本找不到工作的三流学校毕业生 晚上只能睡在网吧靠酒精麻痹自己
+
+2
+00:00:05,024 --> 00:00:08,000
+你知道他的夜生活过得有多凄凉吗晚上8点
+
+3
+00:00:08,128 --> 00:00:13,759
+今年24岁的梅伊福焕才刚结束今天的面试 由于学校不让住了家之又还没有租房
+
+4
+00:00:13,823 --> 00:00:18,719
+所以他每晚都会来网吧过夜 毕竟这是大城市里能找到的最便宜的落脚点了
+
+5
+00:00:18,751 --> 00:00:22,751
+住上一晚只需3000日元左右 确实比其他旅馆要实惠
+
+6
+00:00:22,815 --> 00:00:28,260
+关键日本的网吧还是这种独立的小单间 里面铺满了沙发 想睡个觉的话是没有问题的</pre>
+        </div>
+        <div class="srt-block">
+          <label>Dubbed (English)</label>
+          <pre>1
+00:00:00,192 --> 00:00:04,780
+Third-rate graduate who can't find work in Japan. At night, she sleeps in internet cafes, numbing herself with alcohol.
+
+2
+00:00:04,980 --> 00:00:06,208
+You know how bleak her nights are?
+
+3
+00:00:07,008 --> 00:00:11,080
+At 8 in the evening, Yifu, 24 this year, has just finished another interview.
+
+4
+00:00:11,339 --> 00:00:16,320
+She can't stay at school and hasn't rented a place. She spends every night at the internet cafe. Parole.
+
+5
+00:00:16,544 --> 00:00:20,928
+It's the cheapest place to crash in the big city. Night here costs about 3,000 yen.
+
+6
+00:00:20,992 --> 00:00:26,751
+It's definitely cheaper than a hotel. The key is, Japanese internet cafes have private booths lined with sofas.</pre>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- Example 3 -->
+  <section class="demo-section">
+    <h2>Example 3: English &rarr; Indonesian &amp; Korean</h2>
+    <div class="demo-pair">
+      <div>
+        <label>Original (English)</label>
+        <audio controls controlslist="nodownload" preload="metadata">
+          <source src="../dubbing_examples/ORIGINAL_3_EN.mp4" type="video/mp4">
+        </audio>
+      </div>
+      <div>
+        <label>Dubbed (Indonesian)</label>
+        <audio controls controlslist="nodownload" preload="metadata">
+          <source src="../dubbing_examples/DUBBED_3_IND.mp4" type="video/mp4">
+        </audio>
+      </div>
+    </div>
+    <div class="demo-pair">
+      <div></div>
+      <div>
+        <label>Dubbed (Korean)</label>
+        <audio controls controlslist="nodownload" preload="metadata">
+          <source src="../dubbing_examples/DUBBED_3_KO.mp4" type="video/mp4">
+        </audio>
+      </div>
+    </div>
+    <details>
+      <summary>View Transcription (SRT)</summary>
+      <div class="srt-compare">
+        <div class="srt-block">
+          <label>Original (English)</label>
+          <pre>1
+00:00:00,448 --> 00:00:05,567
+We bring in the studio this morning one of the gay rights activists, Mr.
+
+2
+00:00:05,887 --> 00:00:11,231
+Should I call you Mr. Pepe Julian Onzima. Thank you for coming in. Thank you. Good morning.
+
+3
+00:00:11,295 --> 00:00:17,140
+Why are you gay? Who says I'm gay? You are gay.</pre>
+        </div>
+        <div class="srt-block">
+          <label>Dubbed (Indonesian)</label>
+          <pre>1
+00:00:00,640 --> 00:00:04,480
+Pagi ini kami menghadirkan ke studio salah satu aktivis hak gay.
+
+2
+00:00:04,895 --> 00:00:08,864
+Bapak, haruskah saya memanggil Anda Bapak? PP Yulia Nonzima.
+
+3
+00:00:09,439 --> 00:00:13,375
+Terima kasih sudah datang. Terima kasih. Selamat pagi. Kenapa Anda gay?
+
+4
+00:00:14,304 --> 00:00:17,379
+Siapa bilang saya gay? Anda itu gay.</pre>
+        </div>
+      </div>
+      <div class="srt-compare" style="margin-top: 16px;">
+        <div class="srt-block">
+          <label>Dubbed (Korean)</label>
+          <pre>1
+00:00:00,512 --> 00:00:04,559
+오늘 아침 스튜디오에는 한 명의 성소수자 인권운동가를 모셨습니다.
+
+2
+00:00:04,660 --> 00:00:10,480
+선생님 제가 선생님이라고 불러야 할까요? 테페 줄리안 온지마 씨입니다. 나와주셔서 감사합니다.
+
+3
+00:00:10,699 --> 00:00:13,183
+안녕하세요. 왜 당신은 데이죠?
+
+4
+00:00:14,304 --> 00:00:16,128
+제가 게이라고 누가 말했죠?
+
+5
+00:00:16,800 --> 00:00:17,632
+넌 게이야.</pre>
+        </div>
+        <div class="srt-block"></div>
+      </div>
+    </details>
+  </section>
+
+  <section class="demo-section" style="padding-top: 32px; border-top: 1px solid var(--border);">
+    <p style="font-size: 0.78rem; color: var(--text-muted);">Disclaimer: All audio samples are used solely for demonstration purposes of the AI dubbing technology. Original content belongs to their respective owners.</p>
+  </section>
+</div>
+
+<footer>
+  <div class="container">
+    <p>Vania Velda &mdash; AI Engineer &mdash; Seoul, South Korea</p>
+  </div>
+</footer>
+
+</body>
+</html>
