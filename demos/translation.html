@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LLM Translation Pipeline - Vania Velda</title>
-  <meta name="description" content="End-to-end ASR-to-translation pipeline with LLM-based prompt optimization, terminology grounding, glossary control, and automatic QC across 20+ languages.">
+  <title>Live Broadcast Translation - Vania Velda</title>
+  <meta name="description" content="Korean-to-English translation for live news subtitles: BLEU 16.5 to 30.8, plus medical terminology accuracy from 43.9% to 80.3%.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://xinzuan.github.io/portfolios/demos/translation.html">
-  <meta property="og:title" content="LLM Translation Pipeline Demo - Vania Velda">
-  <meta property="og:description" content="LLM-powered translation with terminology grounding and automatic QC.">
+  <meta property="og:title" content="Live Broadcast Translation - Vania Velda">
+  <meta property="og:description" content="Korean-to-English translation for live news subtitles, from BLEU 16.5 to 30.8.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -20,39 +20,73 @@
   <div class="nav-inner">
     <a href="../index.html" class="nav-brand">Vania Velda</a>
     <ul class="nav-links">
-      <li><a href="../index.html#demos">All Demos</a></li>
+      <li><a href="../index.html#work">All Projects</a></li>
     </ul>
   </div>
 </nav>
 
 <div class="container">
   <div class="page-header">
-    <a href="../index.html#demos" class="back-link">&larr; Back to all demos</a>
-    <h1>LLM Translation Pipeline</h1>
-    <p>End-to-end ASR-to-translation pipeline built for the STRA dubbing platform. Uses LLM-based prompt optimization, terminology grounding, and glossary control to achieve consistent, accurate translations. Includes automatic quality control across 20+ languages.</p>
+    <a href="../index.html#work" class="back-link">&larr; Back to all projects</a>
+    <h1>Live Broadcast Translation</h1>
+    <p>A Korean news broadcaster needed live Korean-to-English subtitles. I built the translation stage. The target was BLEU 30 or higher, fast enough for live use. The model we started from scored 16.5.</p>
   </div>
 
   <section class="demo-section">
-    <h2>Pipeline Stages</h2>
-    <div class="skills-grid">
-      <span class="skill-tag">1. ASR Transcription</span>
-      <span class="skill-tag">2. LLM Translation</span>
-      <span class="skill-tag">3. Terminology Grounding</span>
-      <span class="skill-tag">4. Automatic QC</span>
-      <span class="skill-tag">5. TTS</span>
-    </div>
+    <h2>What I did</h2>
+    <ul class="case-list">
+      <li>Compared more than 10 translation models and LLMs.</li>
+      <li>Fine-tuned Gemma with LoRA, and fine-tuned traditional translation models (M2M100, NLLB).</li>
+    </ul>
   </section>
 
   <section class="demo-section">
-    <div class="placeholder-box">
-      Demo coming soon. This will show the ASR-to-translation pipeline with side-by-side comparisons of raw vs. refined translations.
+    <h2>Results</h2>
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Before</th>
+          <th>After</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="ours">
+          <td>News translation, BLEU on a news test set</td>
+          <td>16.5</td>
+          <td class="best">30.8</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="case-text">The news system runs at about 27 ms per sentence on one GPU.</p>
+    <p class="case-text">Separately, on a medical interpreting test set (dermatology and plastic surgery conversations), training the model to follow a glossary raised medical term accuracy from 43.9% to 80.3%, beating an LLM that is about 7x slower.</p>
+  </section>
+
+  <section class="demo-section">
+    <h2>What the experiments showed</h2>
+    <ul class="case-list">
+      <li>Filtering training data with an automatic quality score did no better than picking sentences at random.</li>
+      <li>Adding LLM-generated synthetic data made the model worse (&minus;2.5 BLEU), while adding real spoken data helped (+2 BLEU).</li>
+    </ul>
+  </section>
+
+  <section class="demo-section">
+    <h2>Related research</h2>
+    <div class="publication-item">
+      <strong>STRA-MT: Deterministic Terminology Control for Document-Level Machine Translation</strong><br>
+      <em>WMT 2026 Shared Task, poster (accepted)</em> &mdash; First author
+    </div>
+    <div class="publication-item">
+      <strong>What Transfers and What Counts: Terminology Inflection in Multilingual NMT</strong><br>
+      <em>NLPIR 2026, oral (accepted)</em> &mdash; First author
     </div>
   </section>
+
 </div>
 
 <footer>
   <div class="container">
-    <p>Vania Velda &mdash; AI Engineer &mdash; Seoul, South Korea</p>
+    <p>Vania Velda &middot; AI Engineer &middot; Seoul, South Korea</p>
   </div>
 </footer>
 

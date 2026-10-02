@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LyricSync - Vania Velda</title>
-  <meta name="description" content="Real-time lyric synchronization for KpopPro (500K+ downloads) using ASR, VAD, lyric crawling, and text-to-audio alignment with 95%+ accuracy.">
+  <title>KpopPro: LyricSync and AI Cover - Vania Velda</title>
+  <meta name="description" content="The AI behind KpopPro (500K+ downloads, acquired): lyrics sync extended from English to Korean at 94.9% accuracy, and AI covers in the user's own voice.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://xinzuan.github.io/portfolios/demos/lyricsync.html">
-  <meta property="og:title" content="LyricSync Demo - Vania Velda">
-  <meta property="og:description" content="Real-time lyric synchronization with 95%+ accuracy for KpopPro app.">
+  <meta property="og:title" content="KpopPro: LyricSync and AI Cover - Vania Velda">
+  <meta property="og:description" content="Lyrics-to-audio alignment for K-pop, in Korean and English.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -20,36 +20,66 @@
   <div class="nav-inner">
     <a href="../index.html" class="nav-brand">Vania Velda</a>
     <ul class="nav-links">
-      <li><a href="../index.html#demos">All Demos</a></li>
+      <li><a href="../index.html#work">All Projects</a></li>
     </ul>
   </div>
 </nav>
 
 <div class="container">
   <div class="page-header">
-    <a href="../index.html#demos" class="back-link">&larr; Back to all demos</a>
-    <h1>LyricSync</h1>
-    <p>Real-time lyric synchronization system built for KpopPro (500K+ downloads, subsequently acquired). Combines ASR, Voice Activity Detection, lyric crawling, and text-to-audio alignment to achieve 95%+ synchronization accuracy for Korean and English songs.</p>
+    <a href="../index.html#work" class="back-link">&larr; Back to all projects</a>
+    <h1>KpopPro: LyricSync and AI Cover</h1>
+    <p>I built the two main AI features of STRA's KpopPro app: LyricSync, which shows K-pop lyrics in time with the song, and AI Cover, which lets users hear a song sung in their own voice. The app reached 500K+ downloads, placed 3rd in the Google for Startups Changgoo Program and was later acquired.</p>
   </div>
 
   <section class="demo-section">
-    <h2>Key Metrics</h2>
-    <div class="skills-grid">
-      <span class="skill-tag">95%+ Sync Accuracy</span>
-      <span class="skill-tag">500K+ App Downloads</span>
-    </div>
+    <h2>LyricSync</h2>
+    <ul class="case-list">
+      <li>Built the full lyrics pipeline: finding the lyrics, detecting where singing happens, and aligning each line to the moment it is sung.</li>
+      <li>The alignment model only handled English, but K-pop is sung mostly in Korean. I added Korean by building a Korean pronunciation pipeline and fine-tuning the model on Korean singing.</li>
+      <li>Built an English and Korean test set for singing, since speech models are trained mostly on speech and singing is much harder for them.</li>
+    </ul>
   </section>
 
   <section class="demo-section">
-    <div class="placeholder-box">
-      Demo recording coming soon. This will show real-time word-level lyric alignment on a K-pop song.
-    </div>
+    <h2>Results</h2>
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>English</th>
+          <th>Korean</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="ours">
+          <td>Lyrics alignment (word starts within 0.5 s)</td>
+          <td>95.2%</td>
+          <td class="best">94.9%</td>
+        </tr>
+        <tr>
+          <td>Lyrics transcription error</td>
+          <td>8.1% WER</td>
+          <td>13.5% CER</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="case-text">Korean ended up almost as accurate as English, even though the model originally could not handle Korean at all.</p>
   </section>
+
+  <section class="demo-section">
+    <h2>AI Cover</h2>
+    <ul class="case-list">
+      <li>Built singing voice conversion that adapts to each user: a user records their voice, and the app creates a cover of a song in that voice while keeping the melody.</li>
+      <li>Also adopted by Korea Job World for its education and career exploration programs.</li>
+    </ul>
+  </section>
+
 </div>
 
 <footer>
   <div class="container">
-    <p>Vania Velda &mdash; AI Engineer &mdash; Seoul, South Korea</p>
+    <p>Vania Velda &middot; AI Engineer &middot; Seoul, South Korea</p>
   </div>
 </footer>
 

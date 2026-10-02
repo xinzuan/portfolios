@@ -1,4 +1,6 @@
-resume/
+# Only the current CV is published; drafts and old versions stay local.
+resume/*
+!resume/Vania_Velda_CV.pdf
 .claude
 
 # Large source WAV files (site uses compressed MP3s for these)

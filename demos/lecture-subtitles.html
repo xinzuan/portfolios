@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lecture Subtitles and Dubbing - Vania Velda</title>
+  <meta name="description" content="7 courses for a Korean university (100+ hours of lectures) subtitled and dubbed into English in each lecturer's own voice, with course terminology taken from the lecture slides.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://xinzuan.github.io/portfolios/demos/lecture-subtitles.html">
+  <meta property="og:title" content="Lecture Subtitles and Dubbing - Vania Velda">
+  <meta property="og:description" content="7 courses for a Korean university, 100+ hours, subtitled and dubbed into English.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-brand">Vania Velda</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#work">All Projects</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-header">
+    <a href="../index.html#work" class="back-link">&larr; Back to all projects</a>
+    <h1>University Lectures in English</h1>
+    <p>A Korean university wanted its recorded courses in English. I built a system that does this automatically: it writes English subtitles and dubs each lecture in the professor's own voice. So far it has done 7 courses, more than 100 hours of video.</p>
+  </div>
+
+  <section class="demo-section">
+    <h2>The problem</h2>
+    <p class="case-text">Technical words are where AI usually fails. If speech recognition has never heard a term like "flip-flop" or "Karnaugh map", it writes something else, and then the translation is wrong too.</p>
+  </section>
+
+  <section class="demo-section">
+    <h2>How I solved it</h2>
+    <ul class="case-list">
+      <li>Every lecture comes with slides, and the slides spell the technical words correctly. The system reads the slides, so it knows which words to expect.</li>
+      <li>Before translating, it builds a word list for the whole course, so each term is translated the same way every time.</li>
+      <li>Each subtitle gets a confidence score, so people only need to check the uncertain ones.</li>
+      <li>The voice is cloned from the professor's own lectures, and every finished video is checked automatically to make sure no line is missing.</li>
+    </ul>
+  </section>
+
+  <section class="demo-section">
+    <h2>Results</h2>
+    <ul class="case-list">
+      <li><strong>7 courses, 100+ hours</strong> of lectures delivered in English.</li>
+      <li><strong>99.5%</strong> of course terms were right the first time: in a human review of one course's 585-term word list, only 3 needed fixing.</li>
+      <li><strong>100%</strong> of lines made it into the dub: in one 15-lecture course, all 8,969 lines were confirmed present.</li>
+    </ul>
+  </section>
+</div>
+
+<footer>
+  <div class="container">
+    <p>Vania Velda &middot; AI Engineer &middot; Seoul, South Korea</p>
+  </div>
+</footer>
+
+</body>
+</html>
