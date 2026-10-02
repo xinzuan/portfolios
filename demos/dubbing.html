@@ -38,7 +38,7 @@
       <li>Built the AI pipeline end to end on open-source and open-weight models: speech recognition, LLM translation, speech generation and voice cloning.</li>
       <li>Built automatic voice matching, which picks the library voice closest to each speaker so the final voice conversion sounds more natural.</li>
       <li>Built quality checks into the pipeline. A line too long for its time slot is re-translated shorter rather than sped up, because a sped-up voice sounds unnatural. The finished dub is transcribed again line by line, and any missing or wrong line is re-generated before delivery.</li>
-      <li>Chose the voice engine with a blind test of 22 voices from 10 TTS engines, scoring both how much each sounds like the speaker and whether it actually says the script.</li>
+      <li>Chose the voice engine by blind-testing 22 voices from 10 text-to-speech engines.</li>
     </ul>
   </section>
 
@@ -46,7 +46,7 @@
     <h2>Results</h2>
     <ul class="case-list">
       <li>Supports 20+ languages, and was used to dub 7 courses (100+ hours) for a Korean university.</li>
-      <li>In the blind test, the voices most similar to the speaker often failed to say the words. The engine we chose, with seed selection, keeps 0.89 voice similarity while saying 96% of the line correctly.</li>
+      <li>In testing, the chosen engine said 96% of the script correctly.</li>
     </ul>
   </section>
 
